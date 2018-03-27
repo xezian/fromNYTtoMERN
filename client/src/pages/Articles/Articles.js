@@ -21,7 +21,7 @@ class Articles extends Component {
   loadArticles = () => {
     API.getArticles()
       .then(res =>
-        this.setState({ books: res.data, title: "", author: "", synopsis: "", url: "" })
+        this.setState({ articles: res.data, title: "", author: "", synopsis: "", url: "" })
       )
       .catch(err => console.log(err));
   };
