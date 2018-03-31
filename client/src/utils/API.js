@@ -1,11 +1,15 @@
 import axios from "axios";
 
 export default {
-  // Gets all articles
+  // Scrapes new aricles to the page
+  scrapeNewArticles: function() {
+    return axios.get("api/articles/scrape");
+  },
+  // Gets all stored articles
   getArticles: function() {
     return axios.get("/api/articles");
   },
-  // Gets the article with the given id
+  // Gets the stored article with the given id
   getArticle: function(id) {
     return axios.get("/api/articles/" + id);
   },
