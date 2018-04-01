@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const articleController = require("../../controllers/articleController");
-const scrape = require("../../scripts/scrape");
+const retrieve = require("./newyorktimes");
 
 // Matches with "api/articles/scrape"
-router.route("/scrape")
-  .get(scrape);
+router.route("/retrieve")
+  .get(retrieve);
 
 // Matches with "/api/articles"
 router.route("/")

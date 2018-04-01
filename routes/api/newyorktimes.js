@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
-const db = require('../models');
+const db = require('../../models');
 // export the scrape function
 module.exports = (req, res) => {
     axios.get("https://www.nytimes.com/section/world").then(function(response) {
