@@ -7,31 +7,37 @@ import { Input, FormBtnLeft } from "../../components/Form";
 
 class Articles extends Component {
   state = {
+    newArticles: [],
     articles: [],
     title: '',
     author: '',
     synopsis: '',
     url: '',
-    requestParams: {
-      topic: '',
-      startDate: '',
-      endDate: '',
-    },
+    topic: '',
+    startDate: '',
+    endDate: '',
   };
 
   componentDidMount() {
     this.loadArticles();
   }
 
-  findArticles = () => {
-    API.retrieveNewArticles(this.state.requestParams)
+  findArticles = event => {
+    event.preventDefault();
+    const requestParams = {
+      topic: this.state.topic,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+    }
+    API.retrieveNewArticles(requestParams)
       .then(res => {
-        console.log(res.data);
-        this.setState({ 
+        this.setState({
+          newArticles: res.data.response,
           topic: '',
           startDate: '',
           endDate: '', 
         })
+        console.log(this.state.newArticles)
       })
       .catch(err => console.log(err));
   }
@@ -46,14 +52,14 @@ class Articles extends Component {
 
   deleteArticle = id => {
     API.deleteArticle(id)
-      .then(res => this.loadBooks())
+      .then(res => this.loadArticles())
       .catch(err => console.log(err));
   };
 
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]:value
     });
   };
 
@@ -73,52 +79,69 @@ class Articles extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-6">
-              <h1>What Articles Should I Find?</h1>
-              <form>
-                <Input
-                value={this.state.topic}
-                onChange={this.handleInputChange}
-                name="title"
-                placeholder="Topic"
-                />
-                <Input
-                value={this.state.startDate}
-                onChange={this.handleInputChange}
-                name="title"
-                placeholder="Start Date"
-                />
-                <Input
-                value={this.state.endDate}
-                onChange={this.handleInputChange}
-                name="title"
-                placeholder="End Date"
-                />
-                <FormBtnLeft
-                  onClick={this.findArticles}
-                >
-                  Search Articles
-                </FormBtnLeft>
-              </form>
+          <Col size="6">
+            <h1>What Articles Should I Find?</h1>
+            <form>
+              <Input
+              value={this.state.topic}
+              onChange={this.handleInputChange}
+              name="topic"
+              placeholder="Topic"
+              />
+              <Input
+              value={this.state.startDate}
+              onChange={this.handleInputChange}
+              name="startDate"
+              placeholder="Start Date"
+              />
+              <Input
+              value={this.state.endDate}
+              onChange={this.handleInputChange}
+              name="endDate"
+              placeholder="End Date"
+              />
+              <FormBtnLeft
+                onClick={this.findArticles}
+              >
+                Search Articles
+              </FormBtnLeft>
+            </form>
           </Col>
-          <Col size="md-6 sm-12">
-            <h1>Articles On My List</h1>
-            {this.state.articles.length ? (
-              <List>
-                {this.state.articles.map(article => (
-                  <ListItem key={article._id}>
-                    <Link to={"/articles/" + article._id}>
-                      <strong>
-                        {article.title} by {article.author}
-                      </strong>
+          <Col size="6">
+            {this.state.newArticles.docs ? (
+              <ul className='moveRight'>
+                {this.state.newArticles.docs.map(article => (
+                  <li key={article._id}>
+                    <strong>
+                      {article.headline.main} by {article.byline?article.byline.original:article.source}
+                    </strong>
+                    <Link to={article.web_url}>
                     </Link>
-                  </ListItem>
+                  </li>  
                 ))}
-              </List>
-            ) : (
-              <h3>No Results to Display</h3>
+              </ul>
+            ):(
+              <h1>No Articles To Show!</h1>
             )}
           </Col>
+        </Row>
+        <Row>
+          <h1>Articles On My List</h1>
+          {this.state.articles.length ? (
+            <List>
+              {this.state.articles.map(article => (
+                <ListItem key={article._id}>
+                  <Link to={"/articles/" + article._id}>
+                    <strong>
+                      {article.title} by {article.author}
+                    </strong>
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <h3>No Results to Display</h3>
+          )}
         </Row>
       </Container>
     );

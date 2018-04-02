@@ -3,6 +3,7 @@ import axios from "axios";
 export default {
   // Retrieve new aricles to the page
   retrieveNewArticles: function(requestParams) {
+    console.log(requestParams);
     return axios.post("api/articles/retrieve", requestParams);
   },
   // Gets all stored articles
