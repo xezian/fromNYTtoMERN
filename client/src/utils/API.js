@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export default {
-  // Scrapes new aricles to the page
-  scrapeNewArticles: function() {
-    return axios.get("api/articles/scrape");
+  // Retrieve new aricles to the page
+  retrieveNewArticles: function(requestParams) {
+    return axios.post("api/articles/retrieve", requestParams);
   },
   // Gets all stored articles
   getArticles: function() {

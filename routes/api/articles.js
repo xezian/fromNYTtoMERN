@@ -4,7 +4,7 @@ const retrieve = require("./newyorktimes");
 
 // Matches with "api/articles/scrape"
 router.route("/retrieve")
-  .get(retrieve);
+  .post(retrieve);
 
 // Matches with "/api/articles"
 router.route("/")

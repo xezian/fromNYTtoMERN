@@ -3,7 +3,7 @@ import API from "../../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtnLeft, FormBtnRight } from "../../components/Form";
+import { Input, FormBtnLeft } from "../../components/Form";
 
 class Articles extends Component {
   state = {
@@ -12,19 +12,34 @@ class Articles extends Component {
     author: '',
     synopsis: '',
     url: '',
-    topic: '',
-    dateBegin: '',
-    dateEnd: '',
+    requestParams: {
+      topic: '',
+      startDate: '',
+      endDate: '',
+    },
   };
 
   componentDidMount() {
     this.loadArticles();
   }
 
+  findArticles = () => {
+    API.retrieveNewArticles(this.state.requestParams)
+      .then(res => {
+        console.log(res.data);
+        this.setState({ 
+          topic: '',
+          startDate: '',
+          endDate: '', 
+        })
+      })
+      .catch(err => console.log(err));
+  }
+
   loadArticles = () => {
     API.getArticles()
       .then(res =>
-        this.setState({ articles: res.data, title: "", author: "", synopsis: "", url: "" })
+        this.setState({ articles: res.data })
       )
       .catch(err => console.log(err));
   };
@@ -44,16 +59,14 @@ class Articles extends Component {
 
   handleSaveArticle = event => {
     event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveArticle({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis,
-        url: this.state.url
-      })
-        .then(res => this.loadBooks())
-        .catch(err => console.log(err));
-    }
+    API.saveArticle({
+      title: this.state.title,
+      author: this.state.author,
+      synopsis: this.state.synopsis,
+      url: this.state.url
+    })
+      .then(res => this.loadArticles())
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -62,44 +75,31 @@ class Articles extends Component {
         <Row>
           <Col size="md-6">
               <h1>What Articles Should I Find?</h1>
-            <form>
-              <Input
-                value={this.state.title}
+              <form>
+                <Input
+                value={this.state.topic}
                 onChange={this.handleInputChange}
                 name="title"
-                placeholder="Title (required)"
-              />
-              <Input
-                value={this.state.author}
+                placeholder="Topic"
+                />
+                <Input
+                value={this.state.startDate}
                 onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
-              />
-              <TextArea
-                value={this.state.synopsis}
+                name="title"
+                placeholder="Start Date"
+                />
+                <Input
+                value={this.state.endDate}
                 onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
-              />
-              <Input
-                value={this.state.url}
-                onChange={this.handleInputChange}
-                name="url"
-                placeholder="Url"
-              />
-              <FormBtnRight
-                disabled={!(this.state.author && this.state.title)}
-                onClick={this.handleFormSubmit}
-              >
-                Save Selected Articles
-              </FormBtnRight>
-              <FormBtnLeft
-                disabled={!(this.state.author && this.state.title)}
-                onClick={this.handleClickScrape}
-              >
-                Scrape New Articles
-              </FormBtnLeft>
-            </form>
+                name="title"
+                placeholder="End Date"
+                />
+                <FormBtnLeft
+                  onClick={this.findArticles}
+                >
+                  Search Articles
+                </FormBtnLeft>
+              </form>
           </Col>
           <Col size="md-6 sm-12">
             <h1>Articles On My List</h1>
