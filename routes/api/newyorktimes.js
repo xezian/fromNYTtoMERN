@@ -3,6 +3,7 @@ const request = require('request');
 module.exports = (req, res) => {
     let qObj = {
         'api-key': 'c3d359d720384d3da7fa38b1f7ea72ee',
+        'fl': 'web_url, snippet, byline, headline',
     };
     if(req.body.topic!=''){
         qObj.q = req.body.topic
