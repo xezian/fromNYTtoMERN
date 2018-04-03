@@ -20,9 +20,11 @@ class Detail extends Component {
       <Container fluid>
         <Row>
           <Col size="md-12">
+              <a href={this.state.article.url} target='blank'>
               <h1>
                 {this.state.article.title} by {this.state.article.author}
               </h1>
+              </a>
           </Col>
         </Row>
         <Row>

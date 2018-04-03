@@ -4,15 +4,12 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, FormBtnLeft } from "../../components/Form";
+import NewArticle from './NewArticle';
 
 class Articles extends Component {
   state = {
     newArticles: [],
     articles: [],
-    title: '',
-    author: '',
-    synopsis: '',
-    url: '',
     topic: '',
     startDate: '',
     endDate: '',
@@ -87,14 +84,12 @@ class Articles extends Component {
               onChange={this.handleInputChange}
               name="topic"
               placeholder="Topic"
-              />
-              <Input
+              /><Input
               value={this.state.startDate}
               onChange={this.handleInputChange}
               name="startDate"
               placeholder="Start Date"
-              />
-              <Input
+              /><Input
               value={this.state.endDate}
               onChange={this.handleInputChange}
               name="endDate"
@@ -109,17 +104,18 @@ class Articles extends Component {
           </Col>
           <Col size="6">
             {this.state.newArticles.docs ? (
-              <ul className='moveRight'>
+              <List>
                 {this.state.newArticles.docs.map(article => (
-                  <li key={article._id}>
-                    <strong>
-                      {article.headline.main} by {article.byline?article.byline.original:article.source}
-                    </strong>
-                    <Link to={article.web_url}>
-                    </Link>
-                  </li>  
+                  <NewArticle 
+                    key={article._id}
+                    title={article.headline.main}  
+                    author={article.byline?article.byline.original:article.source}
+                    synopsis={article.snippet}
+                    url={article.web_url}
+                    loadArticles={this.loadArticles()}
+                  />
                 ))}
-              </ul>
+              </List>
             ):(
               <h1>No Articles To Show!</h1>
             )}
