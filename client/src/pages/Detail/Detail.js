@@ -15,6 +15,12 @@ class Detail extends Component {
       .catch(err => console.log(err));
   }
 
+  deleteArticle = id => {
+      API.deleteArticle(id)
+      .then(res =>this.props.history.push('/'))
+      .catch(err => console.log(err));
+  };
+
   render() {
     return (
       <Container fluid>
@@ -35,6 +41,7 @@ class Detail extends Component {
                 {this.state.article.synopsis}
               </p>
             </article>
+            <button onClick={() => this.deleteArticle(this.state.article._id)}>delete</button>
           </Col>
         </Row>
         <Row>

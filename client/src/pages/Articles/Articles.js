@@ -17,7 +17,7 @@ class Articles extends Component {
 
   componentDidMount() {
     this.loadArticles();
-  }
+  };
 
   findArticles = event => {
     event.preventDefault();
@@ -37,7 +37,7 @@ class Articles extends Component {
         console.log(this.state.newArticles)
       })
       .catch(err => console.log(err));
-  }
+  };
 
   loadArticles = () => {
     API.getArticles()
@@ -47,29 +47,11 @@ class Articles extends Component {
       .catch(err => console.log(err));
   };
 
-  deleteArticle = id => {
-    API.deleteArticle(id)
-      .then(res => this.loadArticles())
-      .catch(err => console.log(err));
-  };
-
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]:value
     });
-  };
-
-  handleSaveArticle = event => {
-    event.preventDefault();
-    API.saveArticle({
-      title: this.state.title,
-      author: this.state.author,
-      synopsis: this.state.synopsis,
-      url: this.state.url
-    })
-      .then(res => this.loadArticles())
-      .catch(err => console.log(err));
   };
 
   render() {

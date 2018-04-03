@@ -13,7 +13,7 @@ class NewArticle extends Component {
         })
         .then(res => this.props.loadArticles)
         .catch(err => console.log(err));
-    }
+    };
 
     render() {
         return (
