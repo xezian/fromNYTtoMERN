@@ -17,6 +17,7 @@ class Articles extends Component {
 
   componentDidMount() {
     this.loadArticles();
+    this.setState({newArticles:[]})
   };
 
   findArticles = event => {
@@ -25,16 +26,16 @@ class Articles extends Component {
       topic: this.state.topic,
       startDate: this.state.startDate,
       endDate: this.state.endDate,
-    }
+    };
+    this.setState({newArticles:[]});
     API.retrieveNewArticles(requestParams)
       .then(res => {
         this.setState({
-          newArticles: res.data.response,
+          newArticles: res.data.response.docs,
           topic: '',
           startDate: '',
           endDate: '', 
         })
-        console.log(this.state.newArticles)
       })
       .catch(err => console.log(err));
   };
@@ -85,9 +86,9 @@ class Articles extends Component {
             </form>
           </Col>
           <Col size="6">
-            {this.state.newArticles.docs ? (
+            {this.state.newArticles ? (
               <List>
-                {this.state.newArticles.docs.map(article => (
+                {this.state.newArticles.map(article => (
                   <NewArticle 
                     key={article._id}
                     title={article.headline.main}  

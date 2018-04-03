@@ -6,7 +6,15 @@ const articleSchema = new Schema({
   author: { type: String, required: true },
   synopsis: { type: String, required: true },
   date: { type: Date, default: Date.now },
-  url: { type: String, required: true }
+  url: { type: String, required: true },
+  notes: [
+    {
+      // Store ObjectIds in the array
+      type: Schema.Types.ObjectId,
+      // The ObjectIds will refer to the ids in the Note model
+      ref: "Note"
+    }
+  ]
 });
 
 const Article = mongoose.model("Article", articleSchema);
