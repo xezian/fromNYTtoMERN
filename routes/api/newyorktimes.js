@@ -1,4 +1,6 @@
 const request = require('request');
+const db = require("../../models");
+
 // export the function
 module.exports = (req, res) => {
     let qObj = {
@@ -22,6 +24,24 @@ module.exports = (req, res) => {
             console.error(err)
         }
         body = JSON.parse(body);
-        res.json(body);
+        let count = 0;
+        body.response.docs.forEach(article => {
+            count++;
+            const author = article.byline?article.byline.original:article.source?article.source:"no author listed";
+            const synopsis = article.snippet&&article.snippet!=''?article.snippit:"no synopsis available"
+            const articleObj = {
+                title: article.headline.main,
+                author: author,
+                synopsis: article.snippet,
+                url: article.web_url,
+            };
+            console.log(article);
+            // TODO: send article to the db not the front end (stalls the app)
+            // db.NewArticle
+            //     .create(articleObj)
+            //     .then(dbModel => res.json(dbModel))
+            //     .catch(err => res.status(422).json(err));
+        })
+        console.log(count);
     })
 };
