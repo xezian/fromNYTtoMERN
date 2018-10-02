@@ -20,7 +20,7 @@ app.use(express.static("client/build"));
 app.use(routes);
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytarticleslist");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytarticleslist", { useNewUrlParser: true });
 
 // Send every request to the React app
 // Define any API routes before this runs
